@@ -181,6 +181,7 @@ namespace ScopeCards
                     MIB.cardtbl.Remove(crd);
 
                     string com = JsonConvert.SerializeObject(crd);
+                    com = "[" + com + "]";
 
                     File.WriteAllText(path + "\\" + crd.card_number + ".json", com);
                     //}
@@ -193,6 +194,26 @@ namespace ScopeCards
                 GVCards.DataSource = MIB.cardtbl;
                 GVCards.Refresh();
             }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            GVCards.ClearSelection();
+            GVCards.DataSource = null;
+            GVCards.Rows.Clear();
+
+            GVCards.DataSource = MIB.cardtbl.Where(x => x.card_number == txCardNo.Text || x.household_name == tbHouseHold.Text).ToList();
+            GVCards.Refresh();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            GVCards.ClearSelection();
+            GVCards.DataSource = null;
+            GVCards.Rows.Clear();
+
+            GVCards.DataSource = MIB.cardtbl;
+            GVCards.Refresh();
         }
     }
 }
